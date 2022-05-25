@@ -1,0 +1,7 @@
+kind: ClientSetConfigParam
+apiVersion: v2alpha1
+spec:
+    url: "https://myharbor.com" 
+    insecure: true
+    username: "username"
+    password: "password"

@@ -1,0 +1,13 @@
+kind: project/CreateProjectParams
+apiVersion: v1alpha1
+metadata:
+  key: "valuehere"
+spec:
+  xrequestid: "requestid_no_need_just_for_example"
+  xresourcenameinlocation: false
+  project:
+    projectname: "hin-test-project-create-from-cli"
+    public: true 
+    storage_limit: 10485760 #1024*1024*10
+  #context: null #Ignore this one
+  #httpclient: null #Ignore this parameter

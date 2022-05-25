@@ -1,0 +1,11 @@
+.idea
+dist/
+.DS_Store
+**/.DS_Store
+.vscode
+cmd/gen_*
+standalone_binary/
+registry-plugins/
+*.tar
+*.tar.gz
+artifacts

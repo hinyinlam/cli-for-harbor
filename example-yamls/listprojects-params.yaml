@@ -1,0 +1,5 @@
+kind: ListProjectsParams
+apiVersion: v2alpha1
+spec:
+    page: 1
+    pagesize: 1

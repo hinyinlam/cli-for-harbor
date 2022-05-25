@@ -1,0 +1,155 @@
+# /*
+# * CLI for Harbor
+# * Copyright 2022 VMware, Inc.
+# *
+# * This product is licensed to you under the Apache 2.0 license (the "License").  You may not use this product except in compliance with the Apache 2.0 License.
+# *
+# * This product may include a number of subcomponents with separate copyright notices and license terms. Your use of these subcomponents is subject to the terms and conditions of the subcomponent's license, as noted in the LICENSE file.
+# */
+# /*
+# * Author: Hin Lam <hinl@vmware.com>
+# *
+
+# Make sure to check the documentation at https://goreleaser.com
+before:
+  hooks:
+    # You may remove this if you don't use go modules.
+    #- go mod tidy
+    # you may remove this if you don't need go generate
+    #- go generate ./...
+    - make clean
+builds:
+  - id: "standalone"
+    main: ./cmd/cli/standalone.go 
+    binary: harbor
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+      - 386 #Yes I know it's non-common in year 2022, but in some nested virtualization, 386 is the only supported
+    ignore:
+      - goos: darwin
+        goarch: 386 #Darwin doesn't like drawin_386 arch
+    goarm:
+      - 5 #Support for edge / raspberry pi without software float point (unverfied if it works or not!)
+
+release:
+    github:
+        owner: hinyinlam
+        name: cli-for-harbor
+    draft: false 
+    prerelease: auto
+    mode: append #Keep my existing notes in the release
+    
+
+archives:
+  - replacements:
+      darwin: Darwin
+      linux: Linux
+      windows: Windows
+      386: i386
+      amd64: x86_64
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ incpatch .Version }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+
+
+
+brews:
+  -
+    # Name template of the recipe
+    # Default to project name
+    name: harbor-cli
+
+    # GOARM to specify which 32-bit arm version to use if there are multiple versions
+    # from the build section. Brew formulas support only one 32-bit version.
+    # Default is 6 for all artifacts or each id if there a multiple versions.
+    goarm: 5
+
+    # GOAMD64 to specify which amd64 version to use if there are multiple versions
+    # from the build section.
+    # Default is v1.
+    goamd64: v1
+
+    # NOTE: make sure the url_template, the token and given repo (github or gitlab) owner and name are from the
+    # same kind. We will probably unify this in the next major version like it is done with scoop.
+
+    # GitHub/GitLab repository to push the formula to
+    tap:
+      owner: hinyinlam
+      name: homebrew-tap
+
+      # Optionally a branch can be provided.
+      # Defaults to the default repository branch.
+      branch: main
+
+      # Optionally a token can be provided, if it differs from the token provided to GoReleaser
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+
+    # Template for the url which is determined by the given Token (github, gitlab or gitea)
+    #
+    # Default depends on the client.
+    url_template: "https://github.com/hinyinlam/cli-for-harbor/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+
+    # Allows you to set a custom download strategy. Note that you'll need
+    # to implement the strategy and add it to your tap repository.
+    # Example: https://docs.brew.sh/Formula-Cookbook#specifying-the-download-strategy-explicitly
+    # Default is empty.
+    download_strategy: CurlDownloadStrategy
+
+    # Git author used to commit to the repository.
+    # Defaults are shown.
+    commit_author:
+      name: Hin Lam
+      email: "3368889+hinyinlam@users.noreply.github.com"
+
+    # The project name and current git tag are used in the format string.
+    commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
+
+    # Folder inside the repository to put the formula.
+    # Default is the root folder.
+    folder: Formula
+
+    # Caveats for the user of your binary.
+    # Default is empty.
+    caveats: "This is an unofficial Harbor CLI for CNCF Harbor Registry, not for production use"
+
+    # Your app's homepage.
+    # Default is empty.
+    homepage: "https://github.com/hinyinlam/cli-for-harbor"
+
+    # Template of your app's description.
+    # Default is empty.
+    description: "Harbor Unoffical CLi"
+
+    # SPDX identifier of your app's license.
+    # Default is empty.
+    license: "Apache 2.0"
+
+    # Setting this will prevent goreleaser to actually try to commit the updated
+    # formula - instead, the formula file will be stored on the dist folder only,
+    # leaving the responsibility of publishing it to the user.
+    # If set to auto, the release will not be uploaded to the homebrew tap
+    # in case there is an indicator for prerelease in the tag e.g. v1.0.0-rc1
+    # Default is false.
+    skip_upload: false
+
+    # So you can `brew test` your formula.
+    # Default is empty.
+    test: |
+      system "#{bin}/harbor --version"
+
+    # Custom install script for brew.
+    # Default is 'bin.install "program"'.
+    install: |
+      bin.install "harbor"
