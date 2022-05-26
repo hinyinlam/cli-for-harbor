@@ -40,11 +40,12 @@ standalone_binary_clean:
 ### Tanzu Plugin Section ###
 .PHONY: tanzu_plugin_clean
 tanzu_plugin_clean: tanzu_plugin_delete tanzu_plugin_delete_discovery tanzu_plugin_non_builder_clean tanzu_plugin_using_builder_clean
+	- rm -f tanzu-harbor-plugin/release-version.txt
 
 .PHONY: package_tanzu_plugin
 #package_tanzu_plugin: tanzu_plugin_using_builder tanzu_plugin_non_builder
 package_tanzu_plugin: tanzu_plugin_non_builder
-	tar jcvf tanzu-framework-plugins-registry-allarch.tar.gz tanzu-harbor-plugin
+	tar jcvf tanzu-harbor-plugin-allarch.tar.gz tanzu-harbor-plugin
 
 RED='\033[0;31m'
 NC='\033[0m'
@@ -101,6 +102,11 @@ tanzu_plugin_install_discovery:
 tanzu_plugin_delete_discovery:
 	- tanzu plugin source delete harbor-local-source
 
+.PHONY: tanzu_plugin_release
+tanzu_plugin_release: 
+	git tag -l --sort=version:refname > tanzu-harbor-plugin/release-version.txt
+	gh release upload `cat tanzu-harbor-plugin/release-version.txt` tanzu-harbor-plugin-allarch.tar.gz --clobber
+
 ### Tanzu CLI related ###
 .PHONY: uninstall_tanzu_cli
 uninstall_tanzu_cli:
@@ -123,15 +129,13 @@ update_go_dependencies:
 clean: standalone_binary_clean tanzu_plugin_clean gorelease_clean
 
 ### Releaser ###
+.PHONY: release
+release: gorelease_standalone tanzu_plugin_release
 
 ### GoReleaser ###
 .PHONY: gorelease_standalone
 gorelease_standalone:
-	goreleaser --rm-dist --snapshot
-
-.PHONY: gorelease_tanzu_harbor_plugin
-gorelease_tanzu_harbor_plugin:
-	goreleaser --rm-dist --snapshot --config=.goreleaser-tanzu-harbor-plugin.yaml
+	goreleaser --rm-dist 
 
 .PHONY: gorelease_clean
 gorelease_clean:
