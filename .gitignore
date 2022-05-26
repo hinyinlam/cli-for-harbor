@@ -9,3 +9,4 @@ registry-plugins/
 *.tar
 *.tar.gz
 artifacts
+tanzu-harbor-plugin/distribution/*

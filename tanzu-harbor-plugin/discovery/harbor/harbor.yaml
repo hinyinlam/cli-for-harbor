@@ -1,0 +1,31 @@
+apiVersion: cli.tanzu.vmware.com/v1alpha1
+kind: CLIPlugin
+metadata:
+  creationTimestamp: null
+  name: harbor
+spec:
+  artifacts:
+    v0.0.4:
+    - arch: amd64
+      digest: 845b7b8407eb6ec62dbec5f5b327e824ccba41cac28aca90c3fda7b9c19aca9a
+      os: darwin
+      type: local
+      uri: darwin/amd64/harbor/v0.0.4/tanzu-harbor-darwin_amd64
+    - arch: arm64
+      digest: 845b7b8407eb6ec62dbec5f5b327e824ccba41cac28aca90c3fda7b9c19aca9a
+      os: darwin
+      type: local
+      uri: darwin/arm64/harbor/v0.0.4/tanzu-harbor-darwin_arm64
+    - arch: amd64
+      digest: 845b7b8407eb6ec62dbec5f5b327e824ccba41cac28aca90c3fda7b9c19aca9a
+      os: windows 
+      type: local
+      uri: windows/amd64/harbor/v0.0.4/tanzu-harbor-windows_amd64
+    - arch: arm64
+      digest: 845b7b8407eb6ec62dbec5f5b327e824ccba41cac28aca90c3fda7b9c19aca9a
+      os: windows 
+      type: local
+      uri: windows/arm64/harbor/v0.0.4/tanzu-harbor-windows_arm64
+  description: Unofficial Harbor CLI
+  optional: true
+  recommendedVersion: v0.0.4

@@ -46,7 +46,8 @@ release:
     
 
 archives:
-  - replacements:
+  - id: "standalone_binary"
+    replacements:
       darwin: Darwin
       linux: Linux
       windows: Windows
