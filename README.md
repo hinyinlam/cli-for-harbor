@@ -1,39 +1,39 @@
 # Harbor Go CLI (Unofficial)
 <p align="center"><img src="doc/cli-logo.gif?raw=true"/></p>
 
-TLDR: How to install `harbor` command
----
 
-Version:
+## Version:
 ---
 This is Alpha version, NOT for production, no support provided, unofficial CLI.
 
-Standalone binary `harbor`:
+## Standalone binary `harbor`:
 ---
 
-## Brew
+### Brew
 For Mac (ARM64 / AMD64), just:
 
 `brew install hinyinlam/tap/harbor-cli`
 
-## Other OS - Windows/Linux
+### Other OS - Windows/Linux
 Download at
 [Release Page](https://github.com/hinyinlam/cli-for-harbor/releases)
 Then move `harbor` to your PATH
 
 (I have not test if Windows / Linux version works, it likely works)
 
-Tanzu Plugin:
----
+## Tanzu Plugin:
+This repo also provide support for [Tanzu Framework](https://github.com/vmware-tanzu/tanzu-framework) CLI
+
+The command line is `tanzu harbor` 
+### Install: 
 Download `tanzu-harbor-plugin-allarch.tar.gz` from [release page](https://github.com/hinyinlam/cli-for-harbor/releases)
 
-To install: 
 ```
 tar xvf tanzu-harbor-plugin-allarch.tar.gz
 tanzu-harbor-plugin/install.sh
 ```
 
-To verify Tanzu plugin install successfully: 
+### To verify Tanzu plugin install successfully: 
 
 Run `tanzu plugin list`
 

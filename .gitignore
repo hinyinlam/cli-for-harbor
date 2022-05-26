@@ -10,3 +10,4 @@ registry-plugins/
 *.tar.gz
 artifacts
 tanzu-harbor-plugin/distribution/*
+tanzu-harbor-plugin/release-version.txt
